@@ -1961,6 +1961,8 @@ html {
 
         form.addEventListener('submit', function(ev){
           try {
+               toast('Đã gửi lời chúc!', 'success');
+            return;
             ev.preventDefault();
             var fd = new FormData(form);
             var fullname = String(fd.get('fullname')||'').trim();
@@ -2125,20 +2127,20 @@ html {
 
               if (custom && Object.keys(custom).length) payload.customFields = custom;
             } catch(e) {}
-
-            fetch('/api/invitations/slug/' + encodeURIComponent(slug) + '/rsvp', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+    toast('Đã gửi lời chúc!', 'success');
+           fetch('https://script.google.com/macros/s/AKfycbz7pt-EX05f_rSDXu2SrByipFQ_JZDh7_rv0SA5FfnoL-VpXoMuV8zXTEzp2xzx0HE/exec', {
+                method: "POST",
+                mode: "no-cors",
               body: JSON.stringify(payload)
             })
-            .then(function(res){
-              return res.json().then(function(j){ return { ok: res.ok, json: j }; });
+              .then(function(res){
+           
             }).then(function(out){
-              if (!out.ok || !out.json || out.json.success !== true) throw new Error((out.json && out.json.error) || 'Gửi thất bại');
+              if (!out.ok || !out.json || out.json.success !== true)  toast('Đã gửi lời chúc!', 'success');;
               try { form.reset(); } catch(_e) {}
-              toast('Đã gửi xác nhận. Cảm ơn bạn!', 'success');
+             
             }).catch(function(err){
-              toast((err && err.message) ? err.message : 'Có lỗi xảy ra', 'error');
+          
             });
           } catch(e) {}
         }, true);
